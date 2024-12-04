@@ -1,0 +1,178 @@
+# Assumes working directory is ../mod-actigraphy/
+defaults:
+  - paths: root
+  - model: GaussianNBClassifier
+  - ablation: all_fts
+  - names: names
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+file_path: None
+
+horizon: 280
+
+models:
+  root: ${paths.root}/models
+  sts_models: ${models.root}/sts_models
+  saved: ${models.root}/saved
+  tensorboard: ${models.root}/tensorboard_logs
+  evaluation: ${models.root}/evaluation
+  results: ${models.evaluation}/results
+  plots: ${models.evaluation}/plots
+
+data:
+  root: ${paths.root}/data
+  tabular: ${data.root}/tabular
+  raw: ${data.root}/raw
+  tabular_processed_path: ${data.tabular}/MOD1000passdata_20200924.csv
+  redcap: ${data.tabular}/MOD1000WomenCohort_DATA_2021-09-27_0959.csv
+  redcap_features:
+    user_id: record_id
+    estimated_delivery_date: edc
+    actual_delivery_date: deliver_date
+    demographics: # Categorical demographic features to compute.
+      - age_enroll
+      - race
+      - ethnicity
+      - education
+      - marital
+      - insur
+      - nullliparous
+  redcap_feature_names:
+    file: ${data.tabular}/MOD1000WomenCohort_DataDictionary_2020-04-10.csv
+    cache: ${data.tabular}/MOD1000WomenCohort_DataDictionary_2020-04-10.pkl
+    feature_name: Variable / Field Name
+    field_label: Field Label
+    section_name: Section Header
+    y_names: # Custom semantic label
+      - Patient experienced preterm birth?
+    n_features: 10
+    exclude_sections: # Sections that would lead to leakage if included.
+      - Labor and Delivery Information
+      - Maternal Outcomes
+      - Neonatal Outcomes
+      - Current Pregnancy Information
+    last_form: third_surveys # Last section to include
+  sts_scorer: ${models.sts_models}/PubMedBERT-combined_vocab
+  batch_size: 1
+  num_workers: 8
+  split:
+    train: 0.7
+    val: 0.1 # Note this will be combined for the tabular dataset.
+    test: 0.2
+  raw_config:
+    label: estimated_date
+    threshold: 37
+    full_term_days: 280 # 40 weeks
+    extension: .mtn
+    keep_status:
+      pretrain:
+        - Pregnant
+        - Delivered
+        - Miscarriage
+        - Loss
+      finetune:
+        - Delivered
+    cache_fname: cache.pkl
+    motion:
+      min: 0
+      max: 8
+      spacing: identity
+    light:
+      min: 0
+      max: 64000
+      spacing: log10
+
+  tabular_features:
+    id_names:
+      - ID
+      - PATname
+      - ID_Trim
+    main_id: ID
+    horizon_id: GA_Days
+    classification_label: # Takes the first label only, drop the rest
+      - PTB
+      - SPTB
+    regression_label: # Takes the first label only, drop the rest
+      - GAWeek
+      - GADay
+      - Edc
+      - Deliver
+      - Trim
+    dt_features:
+      - nightname
+      - Edc
+      - Deliver
+    drop_features:
+      - nightname
+      - ndays
+      - weekday
+    sum_prefix: deliv(\d+)(.*) # Sum all columns that match this regex
+    redcap_include:
+      - preterm
+      - gravida
+      - term
+      - abort
+      - living
+      - income_annual1
+      - education
+      - marital
+      - employed
+      - ethnicity
+      - race
+      - bmi_1vis
+      - alcohol
+      - smoke
+      - drugs
+      - age_enroll
+    nulliparous_id: nullliparous
+    nulliparous_exclude: 
+      - preterm
+      - gravida
+      - term
+      - abort
+      - living
+      - deliv1_ab_wk1
+      - deliv1_csec
+      - deliv1_none___1
+      - deliv1_none___2
+      - deliv1_none___3
+      - deliv1_none___4
+      - deliv1_none___5
+      - deliv1_none___6
+      - deliv1_none___7
+      - deliv1_none___8
+      - deliv1_none___9
+      - deliv1_wtlbs_text
+      - deliv1_wtlbs2_text5
+      - deliv1_wtoz_text3
+      - deliv1_wtoz2_text6
+      - deliv1_year_text2
+      - baby2_yes
+      - baby2_yes2
+      - fullterm_births
+      - prior_ptb_other
+      - prior_spont_ptb
+      - spont_late_ptb
+  task: classification
+
+eval:
+  spec_at_sens: 0.9
+
+plot:
+  max_shap_feats: 30
+  max_shap_precision: 2
+
+torch:
+  optimizer:
+    name: Sophia
+    params:
+      lr: 0.001
+      weight_decay: 0.0001
+      betas:
+        - 0.9
+        - 0.999
+  pretrain:
+    max_epochs: 20
+
+seed: 17897
