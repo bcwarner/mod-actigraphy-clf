@@ -1,0 +1,4 @@
+class_name: GaussianNBWrapper
+save_name: GaussianNBClassifier
+hyperparams:
+  var_smoothing: 1e-9

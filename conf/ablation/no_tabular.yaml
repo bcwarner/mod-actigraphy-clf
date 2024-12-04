@@ -1,0 +1,4 @@
+name: no_tabular
+sts_features: true
+tabular_features: false
+feature_selection: true

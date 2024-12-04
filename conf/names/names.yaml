@@ -1,0 +1,46 @@
+no_sts: Actigraphy Only
+no_tabular: Case Report Forms Only
+all_fts: All Sources
+no_fs: No Final FS
+auroc: AUROC
+auprc: AUPRC
+model: Model
+ablation_config: Ablation
+SVCClassifier: Nonlinear SVC
+GaussianNBClassifier: Gaussian Naive Bayes
+LogisticRegression: Logistic Regression
+LinearSVCClassifier: Linear SVC
+XGBoostClassifier: XGBoost
+all_nulliparous: Nulliparous, All Features
+all_nulliparous_no_redcap: Nulliparous, Actigraphy Features
+all_nulliparous_no_tabular: Nulliparous, CRF Features
+
+sleep_start: Start of the sleep cycle
+sleep_end: End of the sleep cycle
+sleep_mid: Halfway between sleep start and sleep end
+sleep_duration: Sleep length between start and end
+total_activity: Total daily motion count
+sleep_activity: Total motion count during sleep time
+sleep_frequency: Frequency of motion counts during sleep time
+zerolength: Longest contiguous subsequence of zero actigraphy activity
+ddonset: Day-to-day variability between sleep start
+ddoffset: Day-to-day variability between sleep end
+ddmid: Day-to-day variability between sleep middle
+ddduration: Day-to-day variability between sleep duration
+
+deliv1_ab_wk1: Deliveries aborted? (Yes/No)
+deliv1_csec: Mode of Delivery (caetegorical)
+deliv1_none___1: Number of deliveries without complications
+deliv1_none___2: Number of deliveries with VBAC
+deliv1_none___3: Number of deliveries with preeclampsia
+deliv1_none___4: Number of deliveries with preterm births
+deliv1_none___5: Number of deliveries with PPROM
+deliv1_none___6: Number of deliveries with GHTN
+deliv1_none___7: Number of deliveries with GDMA
+deliv1_none___8: Number of deliveries with IUGR
+deliv1_none___9: Number of deliveries with other complications
+deliv1_wtlbs_text: Pounds of first baby in birth
+deliv1_wtlbs2_text5: Pounds of second baby in birth
+deliv1_wtoz_text3: Ounces of first baby in birth
+deliv1_wtoz2_text6: Ounces of second baby in birth
+deliv1_year_text2: Year of delivery

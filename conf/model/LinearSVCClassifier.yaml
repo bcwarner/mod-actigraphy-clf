@@ -1,0 +1,8 @@
+class_name: SVCWrapper
+save_name: LinearSVCClassifier
+hyperparams:
+  kernel:
+    - linear
+  C: [0.001, 0.01, 0.1, 1, 10]
+  max_iter: 1000
+  probability: True

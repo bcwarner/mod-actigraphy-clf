@@ -1,0 +1,6 @@
+name: all_nulliparous_no_tabular # Doesn't enforce uniqueness by including it here, but adds to clarity.
+sts_features: true
+tabular_features: false
+feature_selection: true
+dd_abs: true
+nulliparous_only: true

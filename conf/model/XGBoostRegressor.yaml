@@ -1,0 +1,8 @@
+class_name: XGBoostRegressionWrapper
+save_name: XGBoostRegressor
+hyperparams:
+    objective: reg:squarederror
+    n_estimators: [1, 2, 3]
+    max_depth: [1, 2, 3]
+    learning_rate: 0.1
+    eval_metric: rmse
